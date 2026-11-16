@@ -6,6 +6,11 @@ import { parseLocales } from "./locales.js";
 
 const CENTRO_BAHIA_BLANCA = [-38.7183, -62.2663];
 const ZOOM_INICIAL = 13;
+// Same size and anchor as Leaflet's default marker; colour comes from .pin in CSS.
+const PIN_SVG =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 41" width="25" height="41" aria-hidden="true">' +
+  '<path fill="currentColor" stroke="#fff" stroke-width="1.5" d="M12.5 1C6.15 1 1 6.15 1 12.5 1 21.1 12.5 40 12.5 40S24 21.1 24 12.5C24 6.15 18.85 1 12.5 1z"/>' +
+  '<circle cx="12.5" cy="12.5" r="4.5" fill="#fff"/></svg>';
 const MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 
 main();
@@ -53,7 +58,14 @@ function agregarPin(mapa, local) {
   const nombre = document.createElement("strong");
   nombre.textContent = local.nombre;
   popup.append(nombre, crearAcciones(local));
-  return L.marker([local.coordenadas.lat, local.coordenadas.lng], { title: local.nombre })
+  const icon = L.divIcon({
+    className: "pin",
+    html: PIN_SVG,
+    iconSize: [25, 41],
+    iconAnchor: [12.5, 41],
+    popupAnchor: [0, -36],
+  });
+  return L.marker([local.coordenadas.lat, local.coordenadas.lng], { icon, title: local.nombre })
     .bindPopup(popup)
     .addTo(mapa);
 }

@@ -107,10 +107,28 @@ button {
   font: inherit;
 }
 
+/* Map: black-and-white OpenStreetMap tiles; pins and popups keep their colour. */
+
+.leaflet-tile-pane {
+  filter: grayscale(1);
+}
+
+.pin {
+  color: #1b4d2e;
+}
+
+.pin svg {
+  display: block;
+}
+
 /* Map popup */
 
 .leaflet-container {
   font: inherit;
+}
+
+.leaflet-popup-content a {
+  color: inherit;
 }
 
 .leaflet-popup-content .acciones {
