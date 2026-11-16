@@ -1,0 +1,32 @@
+/* Wireframe only (issue #1): spacing so the data is readable, plus what
+   Leaflet needs. No colours, fonts, borders or other visual design. */
+
+body {
+  margin: 0;
+  padding: 1rem;
+}
+
+#mapa {
+  height: 60vh;
+  margin-bottom: 1.5rem;
+}
+
+.local {
+  margin-bottom: 2rem;
+}
+
+.local > * {
+  margin: 0 0 0.5rem;
+}
+
+.local .acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+
+.leaflet-popup-content .acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
