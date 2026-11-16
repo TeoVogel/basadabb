@@ -1,7 +1,7 @@
 :root {
-  --texto: #111;
-  --texto-suave: #555;
-  --fondo: #fff;
+  --texto: #f2f5f0;
+  --texto-suave: #b9c9bd;
+  --fondo: #006633;
 }
 
 body {
