@@ -1,0 +1,8 @@
+# GitHub Pages (Jekyll) build settings.
+# Keep repo-only files (docs, tests, tooling) out of the published site.
+exclude:
+  - docs/
+  - test/
+  - AGENTS.md
+  - GLOSSARY.md
+  - package.json
