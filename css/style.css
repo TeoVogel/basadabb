@@ -1,154 +1,181 @@
+/* The design system: the only file that decides how BasadaBB looks.
+   Neo-brutalist "Sticker": warm cream paper, thick ink outlines, hard offset
+   shadows, basil green. It styles the classes index.html and js/main.js emit
+   and loads its own fonts; reskin the site by replacing this file. */
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap");
+
 :root {
-  --texto: #f2f5f0;
-  --texto-suave: #b9c9bd;
-  --fondo: #06402B;
+  /* colour */
+  --papel: #fff6e5;
+  --tinta: #111111;
+  --verde: #00b85c;       /* "verde albahaca": fresh, edible, not corporate */
+  --verde-claro: #c9f5d9;
+  --amarillo: #ffd23f;
+  --rosa: #ff8fab;
+  --superficie: #ffffff;
+  /* shape */
+  --borde: 3px solid var(--tinta);
+  --sombra: 6px 6px 0 var(--tinta);
+  --sombra-chica: 3px 3px 0 var(--tinta);
+  --radio: 10px;
+  /* type */
+  --fuente: "Space Grotesk", system-ui, sans-serif;
 }
+
+* { box-sizing: border-box; }
 
 body {
   margin: 0 auto;
-  max-width: 48rem;
-  padding: 1rem;
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  max-width: 72rem;
+  padding: 1.5rem 1rem 6rem;
+  font-family: var(--fuente);
   font-size: 1rem;
   line-height: 1.5;
-  color: var(--texto);
-  background: var(--fondo);
+  color: var(--tinta);
+  background: var(--papel);
+  background-image: radial-gradient(var(--tinta) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-attachment: fixed;
+  background-color: var(--papel);
+}
+body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: -1;
+  background: color-mix(in srgb, var(--papel) 88%, transparent);
 }
 
-/* Page */
-
+/* Header: a sticker slapped on the page */
 header {
-  margin-bottom: 1.5rem;
+  display: inline-block;
+  margin: 0 0 2rem;
+  padding: 1rem 1.5rem;
+  background: var(--verde);
+  border: var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  transform: rotate(-1.5deg);
 }
-
 h1 {
   margin: 0;
-  font-size: 2rem;
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+header p {
+  margin: 0.5rem 0 0;
+  font-weight: 500;
+  font-size: 1.125rem;
 }
 
-header p {
-  margin: 0.25rem 0 0;
-  color: var(--texto-suave);
-}
+main { display: flex; flex-direction: column; gap: 2.5rem; }
+#seccion-mapa { order: -1; }
 
 h2 {
-  margin: 0 0 0.75rem;
+  display: inline-block;
+  margin: 0 0 1rem;
+  padding: 0.125rem 0.75rem;
   font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--amarillo);
+  border: var(--borde);
+  box-shadow: var(--sombra-chica);
+}
+
+#estado {
+  padding: 1rem;
+  background: var(--superficie);
+  border: var(--borde);
+  box-shadow: var(--sombra);
   font-weight: 700;
 }
 
 #mapa {
-  height: 60vh;
-  border: 1px solid var(--texto);
+  height: 55vh;
+  border: var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
 }
 
 /* Cards */
-
 #locales {
   list-style: none;
   padding: 0;
+  margin: 0;
   display: grid;
-  gap: 1rem;
-  margin: 0 0 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+  gap: 1.5rem;
 }
-
 .local {
-  border: 1px solid var(--texto);
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  background: var(--superficie);
+  border: var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  transition: transform 0.12s, box-shadow 0.12s;
 }
-
-.local > * {
-  margin: 0 0 0.5rem;
-}
-
-.local > :last-child {
-  margin-bottom: 0;
-}
-
-.local h3 {
-  margin-bottom: 0.125rem;
-  font-size: 1.125rem;
-  font-weight: 700;
-  line-height: 1.3;
-}
-
-.local .insignia {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.125rem 0.625rem;
-  border: 1px solid var(--texto);
-  border-radius: 999px;
-  font-size: 0.8125rem;
-  font-weight: 700;
-}
-
-.local .insignia span {
-  color: #f5c518;
-}
-
+.local:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--tinta); }
+.local > * { margin: 0; }
+.local h3 { font-size: 1.375rem; line-height: 1.15; letter-spacing: -0.01em; }
 .local .tipo {
+  order: -1;
+  align-self: flex-start;
+  padding: 0.125rem 0.5rem;
   font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
+  font-weight: 700;
   text-transform: uppercase;
-  color: var(--texto-suave);
+  letter-spacing: 0.06em;
+  background: var(--verde-claro);
+  border: 2px solid var(--tinta);
+  border-radius: 999px;
 }
-
-.local .nota {
-  font-style: italic;
+.local .insignia {
+  align-self: flex-start;
+  display: inline-flex; align-items: center; gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8125rem; font-weight: 700;
+  background: var(--amarillo);
+  border: 2px solid var(--tinta);
+  box-shadow: var(--sombra-chica);
+  transform: rotate(2deg);
 }
-
-.local .verificacion {
-  font-size: 0.8125rem;
-  color: var(--texto-suave);
-}
+.local .nota { padding: 0.5rem 0.75rem; background: #fff0f3; border-left: 4px solid var(--rosa); font-size: 0.9375rem; }
+.local .verificacion { font-size: 0.8125rem; opacity: 0.7; }
 
 .acciones {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem 1rem;
-  font-weight: 500;
+  display: flex; flex-wrap: wrap; gap: 0.5rem;
+  margin-top: auto !important;
+  padding-top: 0.5rem;
 }
-
-a {
-  color: inherit;
+.acciones a, .acciones button {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  font: inherit; font-size: 0.875rem; font-weight: 700;
+  color: var(--tinta);
+  text-decoration: none;
+  background: var(--superficie);
+  border: 2px solid var(--tinta);
+  border-radius: 6px;
+  box-shadow: var(--sombra-chica);
+  cursor: pointer;
+  transition: transform 0.08s, box-shadow 0.08s;
 }
+.acciones button { background: var(--verde); }
+.acciones a:hover, .acciones button:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--tinta); }
+.acciones a:active, .acciones button:active { transform: translate(3px, 3px); box-shadow: none; }
 
-button {
-  font: inherit;
-}
+a { color: inherit; }
+button { font: inherit; }
 
-/* Map: black-and-white OpenStreetMap tiles; pins and popups keep their colour. */
-
-.leaflet-tile-pane {
-  filter: grayscale(1);
-}
-
-.pin {
-  color: #1b4d2e;
-}
-
-.pin svg {
-  display: block;
-}
-
-/* Map popup */
-
-.leaflet-container {
-  font: inherit;
-}
-
-.leaflet-popup-content a {
-  color: inherit;
-}
-
-.leaflet-popup-content .acciones {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.25rem;
-  margin-top: 0.25rem;
-}
+/* Map: OpenFreeMap Liberty basemap in its own colours; pins and popups follow the system. */
+.pin { color: var(--verde); filter: drop-shadow(2px 2px 0 var(--tinta)); }
+.pin svg { display: block; }
+.leaflet-container { font: inherit; }
+.leaflet-popup-content-wrapper { border: var(--borde); border-radius: var(--radio); box-shadow: var(--sombra); }
+.leaflet-popup-tip { border: var(--borde); }
+.leaflet-popup-content .acciones { flex-direction: column; align-items: flex-start; margin-top: 0.5rem; }

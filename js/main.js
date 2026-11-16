@@ -6,6 +6,8 @@ import { parseLocales } from "./locales.js";
 
 const CENTRO_BAHIA_BLANCA = [-38.7183, -62.2663];
 const ZOOM_INICIAL = 13;
+// OpenFreeMap: free vector tiles, no key, no account (ADR-0004).
+const ESTILO_MAPA = "https://tiles.openfreemap.org/styles/liberty";
 // Same size and anchor as Leaflet's default marker; colour comes from .pin in CSS.
 const PIN_SVG =
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 41" width="25" height="41" aria-hidden="true">' +
@@ -45,10 +47,12 @@ async function main() {
 
 function crearMapa() {
   const mapa = L.map("mapa").setView(CENTRO_BAHIA_BLANCA, ZOOM_INICIAL);
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
+  L.maplibreGL({
+    style: ESTILO_MAPA,
     attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      '<a href="https://openfreemap.org" target="_blank">OpenFreeMap</a> ' +
+      '<a href="https://www.openmaptiles.org/" target="_blank">&copy; OpenMapTiles</a> ' +
+      'Data from <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
   }).addTo(mapa);
   return mapa;
 }
