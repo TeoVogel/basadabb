@@ -53,10 +53,14 @@
       <p>Dónde encontrar comida vegana en Bahía Blanca.</p>
     </header>
     <main>
-      <p id="estado" role="status">Cargando locales…</p>
+      <p id="estado" role="status">Cargando…</p>
+      <section aria-labelledby="titulo-emprendimientos" hidden id="seccion-emprendimientos">
+        <h2 id="titulo-emprendimientos">Emprendimientos</h2>
+        <ul class="tarjetas" id="emprendimientos"></ul>
+      </section>
       <section aria-labelledby="titulo-locales" hidden id="seccion-locales">
         <h2 id="titulo-locales">Locales</h2>
-        <ul id="locales"></ul>
+        <ul class="tarjetas" id="locales"></ul>
       </section>
       <section aria-labelledby="titulo-mapa" hidden id="seccion-mapa">
         <h2 id="titulo-mapa">Mapa</h2>
