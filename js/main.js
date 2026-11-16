@@ -1,7 +1,9 @@
 // View layer (thin, checked by hand in a browser): downloads the published
-// sheet, then renders one card per Local and one map pin per Local with
-// coordenadas. All sheet text goes in as text, never as HTML.
-import { LOCALES_CSV_URL } from "./config.js";
+// sheet's tabs, then renders one card per Emprendimiento, one card per Local
+// and one map pin per Local with coordenadas. All sheet text goes in as text,
+// never as HTML.
+import { EMPRENDIMIENTOS_CSV_URL, LOCALES_CSV_URL } from "./config.js";
+import { parseEmprendimientos } from "./emprendimientos.js";
 import { parseLocales } from "./locales.js";
 
 const CENTRO_BAHIA_BLANCA = [-38.7183, -62.2663];
@@ -19,30 +21,87 @@ main();
 
 async function main() {
   const estado = document.getElementById("estado");
-  let locales;
-  try {
-    if (!LOCALES_CSV_URL) throw new Error("Falta configurar LOCALES_CSV_URL");
-    const respuesta = await fetch(LOCALES_CSV_URL, { cache: "no-store" });
-    if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
-    locales = parseLocales(await respuesta.text());
-  } catch (error) {
-    console.error(error);
+  const [emprendimientos, locales] = await Promise.allSettled([
+    descargar(EMPRENDIMIENTOS_CSV_URL, parseEmprendimientos),
+    descargar(LOCALES_CSV_URL, parseLocales),
+  ]);
+
+  if (emprendimientos.status === "rejected" && locales.status === "rejected") {
     estado.setAttribute("role", "alert");
-    estado.textContent =
-      "No pudimos cargar la información de los locales. Probá de nuevo en un rato.";
+    estado.textContent = "No pudimos cargar la información. Probá de nuevo en un rato.";
     return;
   }
-
   estado.remove();
-  document.getElementById("seccion-mapa").hidden = false;
-  document.getElementById("seccion-locales").hidden = false;
 
+  mostrarEmprendimientos(emprendimientos);
+  mostrarLocales(locales);
+}
+
+async function descargar(url, parse) {
+  try {
+    const respuesta = await fetch(url, { cache: "no-store" });
+    if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
+    return parse(await respuesta.text());
+  } catch (error) {
+    console.error(url, error);
+    throw error;
+  }
+}
+
+function mostrarEmprendimientos(resultado) {
+  const seccion = document.getElementById("seccion-emprendimientos");
+  seccion.hidden = false;
+  if (resultado.status === "rejected") {
+    seccion.append(errorDeSeccion("los emprendimientos"));
+    return;
+  }
+  const lista = document.getElementById("emprendimientos");
+  for (const emprendimiento of resultado.value) {
+    lista.append(crearTarjetaEmprendimiento(emprendimiento));
+  }
+}
+
+function mostrarLocales(resultado) {
+  const seccion = document.getElementById("seccion-locales");
+  seccion.hidden = false;
+  if (resultado.status === "rejected") {
+    seccion.append(errorDeSeccion("los locales"));
+    return;
+  }
+  document.getElementById("seccion-mapa").hidden = false;
   const mapa = crearMapa();
   const lista = document.getElementById("locales");
-  for (const local of locales) {
+  for (const local of resultado.value) {
     const marcador = local.coordenadas ? agregarPin(mapa, local) : undefined;
     lista.append(crearTarjeta(local, mapa, marcador));
   }
+}
+
+function errorDeSeccion(que) {
+  const p = parrafo(`No pudimos cargar ${que}. Probá de nuevo en un rato.`, "seccion-error");
+  p.setAttribute("role", "alert");
+  return p;
+}
+
+function crearTarjetaEmprendimiento(emprendimiento) {
+  const tarjeta = document.createElement("li");
+  tarjeta.className = "emprendimiento";
+
+  const titulo = document.createElement("h3");
+  titulo.textContent = emprendimiento.nombre;
+  tarjeta.append(titulo);
+
+  if (emprendimiento.tipo) tarjeta.append(parrafo(emprendimiento.tipo, "tipo"));
+  if (emprendimiento.opcionesVeganas) {
+    tarjeta.append(parrafo(emprendimiento.opcionesVeganas, "opciones"));
+  }
+  if (emprendimiento.instagramUrl) {
+    const acciones = document.createElement("div");
+    acciones.className = "acciones";
+    acciones.append(enlaceExterno("Instagram", emprendimiento.instagramUrl));
+    tarjeta.append(acciones);
+  }
+  return tarjeta;
 }
 
 function crearMapa() {
