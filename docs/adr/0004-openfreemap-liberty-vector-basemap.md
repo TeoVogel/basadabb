@@ -1,0 +1,3 @@
+# OpenFreeMap "Liberty" vector basemap inside Leaflet
+
+The map's basemap is OpenFreeMap's "Liberty" style (`https://tiles.openfreemap.org/styles/liberty`), drawn by MapLibre GL through the `@maplibre/maplibre-gl-leaflet` plugin, instead of raster tiles from `tile.openstreetmap.org`. OpenFreeMap needs no key, account or billing, so it keeps the zero-cost constraint of ADR-0002, and its styled vector map fits the site's design better than grey-filtered raster tiles. Leaflet stays as the map API so pins, popups and "Ver en el mapa" didn't change. MapLibre is pinned to v5 because v6 ships only as an ES module, and the Leaflet plugin needs the global `maplibregl` from the UMD build.
