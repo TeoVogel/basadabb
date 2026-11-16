@@ -8,6 +8,7 @@
 //   tipo             string, absent when empty
 //   opcionesVeganas  string, absent when empty
 //   observaciones    string, absent when empty
+//   honoresVeganos   true when the HONORES VEGANOS checkbox is ticked, else absent
 //   verificacion     { anio, mes }, absent when the date is empty or invalid
 //   instagramUrl     "https://www.instagram.com/<handle>/", absent when empty
 //   mapsUrl          the place URL from LINK MAPS, or a search URL; always present
@@ -24,6 +25,7 @@ const COLUMNAS = {
   instagram: "LINK INSTAGRAM",
   maps: "LINK MAPS",
   fecha: "FECHA ACTUALIZACIÓN",
+  honores: "HONORES VEGANOS",
 };
 
 /** @param {string} csvText the published Locales tab, as CSV */
@@ -39,6 +41,7 @@ export function parseLocales(csvText) {
       const valor = celda(row, COLUMNAS[campo]);
       if (valor) local[campo] = valor;
     }
+    if (celda(row, COLUMNAS.honores).toUpperCase() === "TRUE") local.honoresVeganos = true;
     const verificacion = parseVerificacion(celda(row, COLUMNAS.fecha));
     if (verificacion) local.verificacion = verificacion;
     const instagramUrl = normalizeInstagram(celda(row, COLUMNAS.instagram));

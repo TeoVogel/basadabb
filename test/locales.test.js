@@ -182,3 +182,25 @@ test("a place URL on a country Google domain is also kept as the Maps link", () 
   assert.equal(local.mapsUrl, url);
   assert.deepEqual(local.coordenadas, { lat: -38.71, lng: -62.26 });
 });
+
+test("a ticked HONORES VEGANOS checkbox marks the Local; unticked or missing leaves it absent", () => {
+  const locales = parseLocales(
+    csv(
+      "NOMBRE DEL LOCAL,HONORES VEGANOS",
+      "Aleme,TRUE",
+      "Bosque,FALSE",
+      "Cedro,",
+      "Duna, true ",
+    ),
+  );
+  assert.deepEqual(
+    locales.map((l) => [l.nombre, l.honoresVeganos]),
+    [
+      ["Aleme", true],
+      ["Bosque", undefined],
+      ["Cedro", undefined],
+      ["Duna", true],
+    ],
+  );
+  assert.equal("honoresVeganos" in locales[1], false);
+});

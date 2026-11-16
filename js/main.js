@@ -78,6 +78,7 @@ function crearTarjeta(local, mapa, marcador) {
   titulo.textContent = local.nombre;
   tarjeta.append(titulo);
 
+  if (local.honoresVeganos) tarjeta.append(insigniaHonores());
   if (local.tipo) tarjeta.append(parrafo(local.tipo, "tipo"));
   if (local.opcionesVeganas) tarjeta.append(parrafo(local.opcionesVeganas, "opciones"));
   if (local.observaciones) tarjeta.append(parrafo(`Nota: ${local.observaciones}`, "nota"));
@@ -117,6 +118,16 @@ function enlaceExterno(texto, href) {
   enlace.target = "_blank";
   enlace.rel = "noopener noreferrer";
   return enlace;
+}
+
+function insigniaHonores() {
+  const insignia = document.createElement("p");
+  insignia.className = "insignia";
+  const estrella = document.createElement("span");
+  estrella.setAttribute("aria-hidden", "true");
+  estrella.textContent = "★";
+  insignia.append(estrella, " Honores veganos");
+  return insignia;
 }
 
 function parrafo(texto, clase) {
