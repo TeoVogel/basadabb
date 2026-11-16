@@ -66,12 +66,12 @@ function crearTarjeta(local, mapa, marcador) {
   titulo.textContent = local.nombre;
   tarjeta.append(titulo);
 
-  if (local.tipo) tarjeta.append(parrafo(local.tipo));
-  if (local.opcionesVeganas) tarjeta.append(parrafo(local.opcionesVeganas));
-  if (local.observaciones) tarjeta.append(parrafo(`Nota: ${local.observaciones}`));
+  if (local.tipo) tarjeta.append(parrafo(local.tipo, "tipo"));
+  if (local.opcionesVeganas) tarjeta.append(parrafo(local.opcionesVeganas, "opciones"));
+  if (local.observaciones) tarjeta.append(parrafo(`Nota: ${local.observaciones}`, "nota"));
   if (local.verificacion) {
     const { anio, mes } = local.verificacion;
-    tarjeta.append(parrafo(`Verificado ${MESES[mes - 1]} ${anio}`));
+    tarjeta.append(parrafo(`Verificado ${MESES[mes - 1]} ${anio}`, "verificacion"));
   }
 
   const acciones = crearAcciones(local);
@@ -107,8 +107,9 @@ function enlaceExterno(texto, href) {
   return enlace;
 }
 
-function parrafo(texto) {
+function parrafo(texto, clase) {
   const p = document.createElement("p");
+  p.className = clase;
   p.textContent = texto;
   return p;
 }

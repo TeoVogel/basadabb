@@ -1,32 +1,121 @@
-/* Wireframe only (issue #1): spacing so the data is readable, plus what
-   Leaflet needs. No colours, fonts, borders or other visual design. */
+:root {
+  --texto: #111;
+  --texto-suave: #555;
+  --fondo: #fff;
+}
 
 body {
-  margin: 0;
+  margin: 0 auto;
+  max-width: 48rem;
   padding: 1rem;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--texto);
+  background: var(--fondo);
+}
+
+/* Page */
+
+header {
+  margin-bottom: 1.5rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+header p {
+  margin: 0.25rem 0 0;
+  color: var(--texto-suave);
+}
+
+h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 700;
 }
 
 #mapa {
   height: 60vh;
-  margin-bottom: 1.5rem;
+  border: 1px solid var(--texto);
+}
+
+/* Cards */
+
+#locales {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  margin: 0 0 2rem;
 }
 
 .local {
-  margin-bottom: 2rem;
+  border: 1px solid var(--texto);
+  padding: 1rem;
 }
 
 .local > * {
   margin: 0 0 0.5rem;
 }
 
-.local .acciones {
+.local > :last-child {
+  margin-bottom: 0;
+}
+
+.local h3 {
+  margin-bottom: 0.125rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.local .tipo {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.local .nota {
+  font-style: italic;
+}
+
+.local .verificacion {
+  font-size: 0.8125rem;
+  color: var(--texto-suave);
+}
+
+.acciones {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 0.5rem 1rem;
+  font-weight: 500;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+}
+
+/* Map popup */
+
+.leaflet-container {
+  font: inherit;
 }
 
 .leaflet-popup-content .acciones {
-  display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 0.25rem;
+  margin-top: 0.25rem;
 }
